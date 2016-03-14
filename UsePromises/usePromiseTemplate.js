@@ -37,7 +37,7 @@ function mapAsyncInOrder(iterator, array, context) {
                     next(i);
                 })
             } else {
-                console.log(result);
+                //console.log(result);
                 resolve(result);
             }
         }
@@ -50,4 +50,26 @@ function mapAsyncInOrder(iterator, array, context) {
 };
 function mapAsyncInDescendingOrder(iterator, array, context) {
     
+    var promise = new Promise(function(resolve, reject) {
+        var result = []
+        
+        function next(i) {
+            //console.log(i);
+            if (result.length < array.length) {
+                iterator(array[i]).then(function(arg) {
+                    result.push(arg);
+                    i--;
+                    next(i);
+                })
+            } else {
+                //console.log(result);
+                resolve(result);
+            }
+        }
+        
+        var i = array.length - 1;
+        next(i);
+    })
+    
+    return promise;
 };
