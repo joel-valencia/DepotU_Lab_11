@@ -25,6 +25,28 @@ function mapAsync(iterator, obj, context) {
 };
 function mapAsyncInOrder(iterator, array, context) {
     
+    var promise = new Promise(function(resolve, reject) {
+        var result = []
+        
+        function next(i) {
+            //console.log(i);
+            if (result.length < array.length) {
+                iterator(array[i]).then(function(arg) {
+                    result.push(arg);
+                    i++;
+                    next(i);
+                })
+            } else {
+                console.log(result);
+                resolve(result);
+            }
+        }
+        
+        var i = 0;
+        next(i);
+    })
+    
+    return promise;
 };
 function mapAsyncInDescendingOrder(iterator, array, context) {
     
